@@ -89,12 +89,15 @@ def main():
     app.add_error_handler(on_error)
 
     # PTB сам реєструє /setWebhook, якщо передати webhook_url
+    WEBHOOK_PATH = "webhook"
     app.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        webhook_url=f"{PUBLIC_URL}/webhook",
-        allowed_updates=["message"],
-    )
+       listen="0.0.0.0",
+       port=PORT,
+       url_path=WEBHOOK_PATH,                     # ← головне дописати!
+       webhook_url=f"{PUBLIC_URL}/{WEBHOOK_PATH}",# https://xxx.onrender.com/webhook
+       allowed_updates=["message"],
+       drop_pending_updates=True,                 # щоб прибрати 13 «висячих»
+   )
 
 if __name__ == "__main__":
     main()
