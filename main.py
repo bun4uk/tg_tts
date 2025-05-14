@@ -30,6 +30,7 @@ def detect_public_url() -> str:
     )
 
 PUBLIC_URL = detect_public_url()
+print(PUBLIC_URL)
 PORT       = int(os.getenv("PORT", "10000"))          # не змінюємо
 
 logging.basicConfig(level=logging.INFO,
