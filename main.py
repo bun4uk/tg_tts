@@ -54,8 +54,8 @@ TEXT_OR_CAPTION = TextOrCaption()
 
 # ─── 4. Хендлер повідомлень ──────────────────────────────────────────────────
 async def handle(update, ctx: ContextTypes.DEFAULT_TYPE):
-    # if update.effective_user.id != OWNER_ID:
-        # return                        # ігноруємо всіх, крім власника
+    if update.effective_user.id != OWNER_ID:
+        return                        # ігноруємо всіх, крім власника
 
     msg  = update.effective_message
     text = msg.text or msg.caption
