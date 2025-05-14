@@ -17,8 +17,20 @@ load_dotenv()
 BOT_TOKEN   = os.environ["TELEGRAM_BOT_TOKEN"]
 OPENAI_KEY  = os.environ["OPENAI_API_KEY"]
 OWNER_ID    = int(os.environ["OWNER_ID"])
-PUBLIC_URL  = os.environ["PUBLIC_URL"]          # https://mybot.onrender.com
-PORT        = int(os.getenv("PORT", "10000"))   # Render підставляє PORT
+def detect_public_url() -> str:
+    manual = os.getenv("PUBLIC_URL")                  # якщо ви задали вручну
+    if manual:
+        return manual.rstrip("/")
+    hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME")  # дає Render автоматично
+    if hostname:                                      # → mybot.onrender.com
+        return f"https://{hostname}"
+    raise RuntimeError(
+        "Не задано PUBLIC_URL і нема RENDER_EXTERNAL_HOSTNAME; "
+        "для локального запуску використайте --webhook-url."
+    )
+
+PUBLIC_URL = detect_public_url()
+PORT       = int(os.getenv("PORT", "10000"))          # не змінюємо
 
 logging.basicConfig(level=logging.INFO,
     format="%(asctime)s %(levelname)s | %(name)s: %(message)s")
